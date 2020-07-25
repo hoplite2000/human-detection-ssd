@@ -86,7 +86,7 @@ while True:
 
     rects = []
 
-    if totalFrames % 5 == 0:
+    if totalFrames % 3 == 0:
         trackers = []
 
         blob = cv2.dnn.blobFromImage(frame, 0.007843, (W, H), 127.5)
@@ -171,12 +171,12 @@ while True:
 
             if not to.counted:
 
-                if direction < 0 and centroid[1] < H // 2:
+                if direction < 0 and (H//2)-10 < centroid[1] < H // 2:
                     totalUp += 1
                     totalUptemp+=1
                     to.counted = True
 
-                elif direction > 0 and centroid[1] > H // 2:
+                elif direction > 0 and (H//2)+10 > centroid[1] > H // 2:
                     totalDown += 1
                     totalDowntemp+=1
                     to.counted = True
@@ -188,6 +188,8 @@ while True:
         if c > 10:
             record = False
             c = 0
+            totalUptemp = 0
+            totalDowntemp = 0
         # if any problems occurs like capturing video even if no intruders are there then change the below condition to 2
         if totalDowntemp > 1 or totalUptemp > 1:
             if c < 10:
@@ -248,8 +250,8 @@ while True:
 
 # stop the timer and display FPS information
 fps.stop()
-print("[INFO] elapsed time: {:.2f}".format(fps.elapsed()))
-print("[INFO] approx. FPS: {:.2f}".format(fps.fps()))
+print("\n> Elapsed time: {:.2f}".format(fps.elapsed()))
+print("> Approx. FPS: {:.2f}".format(fps.fps()))
 
 vs.release()
 cv2.destroyAllWindows()
